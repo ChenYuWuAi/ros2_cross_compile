@@ -1,0 +1,7 @@
+ubuntu_*/
+build/
+log/
+install/
+.vscode/
+
+src/ros2_control_demos
