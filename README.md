@@ -19,9 +19,9 @@ docker run --rm arm64v8/alpine uname -a
 
 然后，克隆本仓库到本地，并构建编译镜像：
 ```shell
-git clone https://github.com/ChenYuWuAi/ros2_cross_compile.git
-cd ros2_cross_compile
-./setup_qemu_environment.sh
+git clone https://github.com/ChenYuWuAi/ros2_cross_compile.git && \
+    cd ros2_cross_compile && \
+    ./setup_qemu_environment.sh
 ```
 执行这个命令后，会在目录下导出一个系统根目录`ubuntu_arm64`，并构建一个编译镜像`cpp_pubsub:1.0-arm64`.实际上，`ubuntu_arm64`就是这个镜像的文件系统。
 ### 2. 编译源码
@@ -43,8 +43,7 @@ install/lib/cpp_pubsub/talker: ELF 64-bit LSB pie executable, ARM aarch64, versi
 
 要验证交叉编译后的ROS2源码是否可以在目标架构上运行，可以将`install`文件夹拷贝到目标架构系统上，然后执行以下命令：
 ```shell
-source install/setup.bash
-
-ros2 run cpp_pubsub talker
+source install/setup.bash && \
+    ros2 run cpp_pubsub talker
 ```
 如果可以正常运行，说明交叉编译成功。
