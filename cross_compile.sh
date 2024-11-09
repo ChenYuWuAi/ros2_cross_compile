@@ -4,7 +4,7 @@
 if [ "$1" == "help" ]; then
     echo -e "\033[1;32mCross Compile ROS2 for ARM64"
     echo -e "\033[1;33mUsage: ./cross_compile.sh dest <port> <user>@<ip>:<path>"
-    echo -e "Example: ./cross_compile.sh dest 8123 ubuntu@xx.xx.xx.xx:/home/ubuntu/ros_install\033[0m"
+    echo -e "Example: ./cross_compile.sh dest xxxx ubuntu@xx.xx.xx.xx:/home/ubuntu/ros_install\033[0m"
     exit 0
 fi
 
