@@ -7,23 +7,24 @@ WORKDIR /ros_test_ws
 # 换源
 RUN sed -i 's/ports.ubuntu.com/mirrors.seu.edu.cn/g' /etc/apt/sources.list.d/ubuntu.sources
 
-# # 更新并安装构建依赖项
-RUN apt-get update && apt-get install -y \
-    ros-jazzy-ros2-control ros-jazzy-ros2-controllers ros-jazzy-controller-manager
+# 更新并安装构建依赖项
+# RUN apt-get update && apt-get install -y \
+#    ros-jazzy-# 这里按需更改
 
-COPY ./src/ros2_control_demos /home/ros2_ws/src/ros2_control_demos
+# COPY ./src/ros2_control_demos /home/ros2_ws/src/ros2_control_demos # 这里按需更改
 
-ENV HTTP_PROXY=http://10.208.95.154:20172
-ENV HTTPS_PROXY=http://10.208.95.154:20172
+ENV HTTP_PROXY=# 这里按需更改
+ENV HTTPS_PROXY=# 这里按需更改
 
-RUN cd /home/ros2_ws/src \
-    && rosdep update --rosdistro ${ROS_DISTRO}  
+# 这里按需更改
+#RUN cd /home/ros2_ws/src \
+#    && rosdep update --rosdistro ${ROS_DISTRO}  
 
-RUN rosdep install --from-paths ./ -i -y --rosdistro ${ROS_DISTRO} \
-    --skip-keys ros-${ROS_DISTRO}-joint-state-publisher-gui --skip-keys ros-${ROS_DISTRO}-rviz2\
-    && \
-    : "remove cache" && \
-    apt-get autoremove -y -qq && \
-    rm -rf /var/lib/apt/lists/*
+#RUN rosdep install --from-paths ./ -i -y --rosdistro ${ROS_DISTRO} \
+#    --skip-keys ros-${ROS_DISTRO}-joint-state-publisher-gui --skip-keys ros-${ROS_DISTRO}-rviz2\
+#    && \
+#    : "remove cache" && \
+#    apt-get autoremove -y -qq && \
+#    rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT ["/bin/bash", "-c"]
