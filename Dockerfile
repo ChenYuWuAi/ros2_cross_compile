@@ -1,5 +1,5 @@
 # 使用 ROS 2 Jazzy 官方基础镜像，强制使用本地构建
-FROM dockerpull.org/ros:jazzy
+FROM ros:jazzy
 
 # 设置工作目录
 WORKDIR /ros_test_ws

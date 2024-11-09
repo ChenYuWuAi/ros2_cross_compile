@@ -41,8 +41,6 @@ sed -i "s|$SYSROOT||g" $(pwd)/install/setup.zsh
 
 echo -e "\033[1;32mROS2 packages built successfully.\033[0m"
 
-# SCP the install folder to the target device using shell parameter indicating the target device IP and directory
-# Example: ./cross_compile.sh -rP 8123 ubuntu@10.203.193.223:/home/ubuntu/ros_install
 if [ "$1" == "dest" ]; then
     echo -e "\033[1;32mCopying the install folder to the target device\033[0m"
     scp -rP $2 $(pwd)/install $3

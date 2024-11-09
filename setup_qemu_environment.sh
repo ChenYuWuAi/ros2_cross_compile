@@ -12,7 +12,7 @@ TAG="cpp_pubsub:1.0-arm64"
 if [ "$EUID" -ne 0 ]; then
     sudo echo -e "\033[1;32mGaining root access..."
     if [ $? -ne 0 ]; then
-        echo -e "\031[1;31mFailed to gain root access"
+        echo -e "\033[1;31mFailed to gain root access"
         exit 1
     fi
     echo -e "\033[1;33mRoot access granted\033[0m"
@@ -24,35 +24,10 @@ if ! docker >/dev/null 2>&1; then
     exit 1
 fi
 
-if ! docker buildx version >/dev/null 2>&1; then
-    echo -e "\033[1;31mDocker buildx is not installed. Please install it first.\033[0m"
-    exit 1
-fi
-
-# Check if builder exists
-if ! docker buildx ls | grep -q "qemu_builder"; then
-    echo -e "\033[1;33mBuilder does not exist. Creating a new one\033[0m"
-    docker buildx create --name qemu_builder --driver-opt image=moby/buildkit:master --use >/dev/null 2>&1
-    if [ $? -ne 0 ]; then
-        echo -e "\033[1;31mFailed to create the builder\033[0m"
-        exit 1
-    fi
-fi
-
-# Check if builder is active
-if ! docker buildx inspect qemu_builder | grep -q "builder"; then
-    echo -e "\033[1;31mBuilder is not active. Activating the builder\033[0m"
-    docker buildx inspect qemu_builder --bootstrap >/dev/null 2>&1
-    if [ $? -ne 0 ]; then
-        echo -e "\033[1;31mFailed to activate the builder\033[0m"
-        exit 1
-    fi
-fi
-
 echo -e "\033[1;32mBuilding the docker image for $ARCH\033[0m"
 
 # Build the docker image, if fails, stop the script
-docker buildx build . --platform=$TARGET_ARCH -t $TAG --load # Limit the number of CPUs used by the container
+docker build . --platform=$TARGET_ARCH -t $TAG --load  # Limit the number of CPUs used by the container
 if [ $? -ne 0 ]; then
     echo -e "\033[1;31mFailed to build the docker image\033[0m"
     exit 1
@@ -97,5 +72,9 @@ if [ $? -ne 0 ]; then
     echo -e "\033[1;31mFailed to add COLCON_IGNORE file\033[0m"
     exit 1
 fi
+
+# Install the necessary packages
+echo -e "\033[1;32mInstalling the necessary packages for cross-compilation\033[0m"
+sudo apt-get install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu -y
 
 echo -e "\033[1;32mSetup complete\033[0m"
