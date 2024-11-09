@@ -13,6 +13,7 @@ if [ "$EUID" -ne 0 ]; then
     sudo echo -e "\033[1;32mGaining root access..."
     if [ $? -ne 0 ]; then
         echo -e "\033[1;31mFailed to gain root access"
+        echo -e "\033[1;31mFailed to gain root access"
         exit 1
     fi
     echo -e "\033[1;33mRoot access granted\033[0m"
