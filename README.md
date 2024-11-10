@@ -27,7 +27,9 @@ git clone https://github.com/ChenYuWuAi/ros2_cross_compile.git && \
 ```
 如果一直拉取不下来，可以尝试换源/配置`docker`代理，如果有代理也拉不下来，可以先尝试`docker pull ros:jazzy`手动拉取。
 
-执行这个命令后，会在目录下导出一个系统根目录`ubuntu_arm64`，并构建一个编译镜像`cpp_pubsub:1.0-arm64`.实际上，`ubuntu_arm64`就是这个镜像的文件系统。
+执行这个命令后，会在目录下构建一个编译镜像`cpp_pubsub:1.0-arm64`，并导出一个系统根目录`ubuntu_arm64`.
+
+> 实际上，`ubuntu_arm64`就是这个镜像的文件系统。
 ### 2. 编译源码
 在`ros2_cross_compile`目录下，执行以下命令：
 ```shell
