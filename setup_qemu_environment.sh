@@ -36,8 +36,17 @@ fi
 
 docker run $TAG "echo 'Build successful'" >/dev/null 2>&1
 if [ $? -ne 0 ]; then
-    echo -e "\033[1;31mFailed to run the container\033[0m"
-    exit 1
+    echo -e "\033[1;31mFailed to run the container, trying to reinitialize the qemu environment\033[0m"
+    docker run --privileged --rm tonistiigi/binfmt --install all
+    if [ $? -ne 0 ]; then
+        echo -e "\033[1;31mFailed to reinitialize the qemu environment\033[0m"
+        exit 1
+    fi
+    docker run $TAG "echo 'Build successful'" >/dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo -e "\033[1;31mFailed to run the container\033[0m"
+        exit 1
+    fi
 fi
 
 echo -e "\033[1;32mBuild complete. Copying the install folder to the workspace\033[0m"
@@ -72,6 +81,16 @@ sudo touch $WORKSPACE_DIR/ubuntu_$ARCH/COLCON_IGNORE
 if [ $? -ne 0 ]; then
     echo -e "\033[1;31mFailed to add COLCON_IGNORE file\033[0m"
     exit 1
+fi
+
+# Mkdir for workspace
+if [ ! -d "$WORKSPACE_DIR/ubuntu_$ARCH/workspace" ]; then
+    sudo mkdir $WORKSPACE_DIR/ubuntu_$ARCH/workspace
+    sudo chown $USER:$USER $WORKSPACE_DIR/ubuntu_$ARCH/workspace
+    if [ $? -ne 0 ]; then
+        echo -e "\033[1;31mFailed to create the workspace folder\033[0m"
+        exit 1
+    fi
 fi
 
 # Install the necessary packages
