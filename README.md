@@ -25,7 +25,7 @@ git clone https://github.com/ChenYuWuAi/ros2_cross_compile.git && \
     cd ros2_cross_compile && \
     ./setup_qemu_environment.sh
 ```
-如果一直拉取不下来，可以尝试换源/配置`docker`代理，如果有代理也拉不下来，可以先尝试`docker pull ros:jazzy`手动拉取。
+如果一直拉取不下来，可以尝试换源/配置`docker`代理，如果有代理也拉不下来，可以先尝试`docker pull ros:jazzy`手动拉取。实在不行就改一下`Dockerfile`，把第一行`FROM`字段改成其他源。
 
 执行这个命令后，会在目录下构建一个编译镜像`cpp_pubsub:1.0-arm64`，并导出一个系统根目录`ubuntu_arm64`.
 
