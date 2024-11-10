@@ -13,7 +13,7 @@ export TARGET_ARCH=aarch64
 export SYSROOT=$(pwd)/ubuntu_arm64
 export PYTHON_SOABI=cpython-36m-aarch64-linux-gnu
 export ROS2_INSTALL_PATH=$SYSROOT/opt/ros/jazzy
-export ROS_WS_INSTALL_PATH=ROS2_INSTALL_PATH
+export ROS_WS_INSTALL_PATH=/workspace/install
 
 source $ROS2_INSTALL_PATH/setup.bash
 
@@ -25,10 +25,17 @@ if [ ! -d $SYSROOT ]; then
     exit 1
 fi
 
+# 将本地的工作空间install文件夹链接到SYSROOT的install文件夹
+if [ -d $SYSROOT/$ROS_WS_INSTALL_PATH ]; then
+    rm $SYSROOT/$ROS_WS_INSTALL_PATH -rf
+fi
+ln -s $(pwd)/install $SYSROOT/$ROS_WS_INSTALL_PATH
+
 colcon build --merge-install \
     --cmake-force-configure \
     --cmake-args \
-        -DCMAKE_TOOLCHAIN_FILE=$(pwd)/toolchain.cmake
+        -DCMAKE_TOOLCHAIN_FILE=$(pwd)/toolchain.cmake \
+#    --event-handlers console_direct+
 
 if [ $? -ne 0 ]; then
     echo -e "\033[1;31mFailed to build ROS2 packages\033[0m"
