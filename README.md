@@ -9,15 +9,14 @@
 ### 1. 配置`Docker`交叉编译环境
 首先，需要在`Docker`中配置好qemu和目标架构的系统环境。用户需安装`Docker`，自行配置解决用户权限和代理问题。
 
-执行以下命令安装`qemu`和目标架构的系统环境：
+执行以下命令，`Docker`会自动下载`qemu`的环境。
 ```shell
 docker run --privileged --rm tonistiigi/binfmt --install all
 ```
-执行这个命令后，`Docker`会自动下载`qemu`的环境。
+[可选]执行这个命令可以验证`qemu`是否安装成功。
 ```shell
 docker run --rm arm64v8/alpine uname -a
 ```
-执行这个命令可以验证`qemu`是否安装成功。
 
 然后，克隆本仓库到本地，并构建编译镜像：
 ```shell
@@ -54,7 +53,7 @@ source install/setup.bash && \
 ```
 如果可以正常运行，说明交叉编译成功。
 
-### 3. 【按需执行】添加你自己包交叉编译所需的环境
+### 3. [按需执行]添加你自己包交叉编译所需的环境
 修改`Dockerfile`即可，然后重新执行镜像构建：
 ```shell
 ./setup_qemu_environment.sh
