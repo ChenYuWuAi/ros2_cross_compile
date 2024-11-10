@@ -34,8 +34,7 @@ ln -s $(pwd)/install $SYSROOT/$ROS_WS_INSTALL_PATH
 colcon build --merge-install \
     --cmake-force-configure \
     --cmake-args \
-        -DCMAKE_TOOLCHAIN_FILE=$(pwd)/toolchain.cmake \
-#    --event-handlers console_direct+
+        -DCMAKE_TOOLCHAIN_FILE=$(pwd)/toolchain.cmake
 
 if [ $? -ne 0 ]; then
     echo -e "\033[1;31mFailed to build ROS2 packages\033[0m"
