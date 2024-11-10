@@ -5,6 +5,10 @@
 
 本脚本在`Ubuntu 24.04.1`上测试可用，`ROS`镜像版本为`jazzy`，在网络良好的环境下可以顺利运行。
 
+![image](https://github.com/user-attachments/assets/e2094874-4f87-4b13-92a9-f4feb98a6e8a)
+![image](https://github.com/user-attachments/assets/da18ed19-dc85-496c-bb42-31a95402d7cb)
+
+上图展示了`rk3566`和`11th Gen Intel i7-11370H`将`ROS2`示例程序编译成`aarch64`格式可执行文件的时间开销对比。
 ## Usage
 ### 1. 配置`Docker`交叉编译环境
 首先，需要在`Docker`中配置好qemu和目标架构的系统环境。用户需安装`Docker`，自行配置解决用户权限和代理问题。
