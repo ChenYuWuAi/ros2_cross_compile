@@ -53,3 +53,9 @@ source install/setup.bash && \
     ros2 run cpp_pubsub talker
 ```
 如果可以正常运行，说明交叉编译成功。
+
+### 3. 【按需执行】添加你自己包交叉编译所需的环境
+修改`Dockerfile`即可，然后重新执行镜像构建：
+```shell
+./setup_qemu_environment.sh
+```
