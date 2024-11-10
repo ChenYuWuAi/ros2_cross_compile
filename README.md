@@ -13,7 +13,7 @@
 ```shell
 docker run --privileged --rm tonistiigi/binfmt --install all
 ```
-[可选]执行这个命令可以验证`qemu`是否安装成功。
+> 执行这个命令可以验证`qemu`是否安装成功。
 ```shell
 docker run --rm arm64v8/alpine uname -a
 ```
@@ -24,11 +24,16 @@ git clone https://github.com/ChenYuWuAi/ros2_cross_compile.git && \
     cd ros2_cross_compile && \
     ./setup_qemu_environment.sh
 ```
-如果一直拉取不下来，可以尝试换源/配置`docker`代理，如果有代理也拉不下来，可以先尝试`docker pull ros:jazzy`手动拉取。实在不行就改一下`Dockerfile`，把第一行`FROM`字段改成其他源。
 
 执行这个命令后，会在目录下构建一个编译镜像`cpp_pubsub:1.0-arm64`，并导出一个系统根目录`ubuntu_arm64`.
-
 > 实际上，`ubuntu_arm64`就是这个镜像的文件系统。
+
+> #### 提示
+> 如果一直拉取不下来，可以尝试换源/配置`docker`代理，如果有代理也拉不下来，可以先尝试`docker pull ros:jazzy`手动拉取。实在不行就改一下`Dockerfile`，把第一行`FROM`字段改成其他源。
+
+> #### 如何添加你自己包交叉编译所需的环境
+> 修改`Dockerfile`即可，然后再执行镜像构建：`./setup_qemu_environment.sh`
+
 ### 2. 编译源码
 在`ros2_cross_compile`目录下，执行以下命令：
 ```shell
@@ -52,9 +57,3 @@ source install/setup.bash && \
     ros2 run cpp_pubsub talker
 ```
 如果可以正常运行，说明交叉编译成功。
-
-### 3. [按需执行]添加你自己包交叉编译所需的环境
-修改`Dockerfile`即可，然后重新执行镜像构建：
-```shell
-./setup_qemu_environment.sh
-```
