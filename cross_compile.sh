@@ -48,12 +48,46 @@ sed -i "s|$SYSROOT||g" $(pwd)/install/setup.zsh
 echo -e "\033[1;32mROS2 packages built successfully.\033[0m"
 
 if [ "$1" == "dest" ]; then
-    echo -e "\033[1;32mCopying the install folder to the target device\033[0m"
-    scp -rP $2 $(pwd)/install $3
-    if [ $? -ne 0 ]; then
-        echo -e "\033[1;31mFailed to copy the install folder to the target device\033[0m"
+    echo -e "\033[1;32mParsing target device information\033[0m"
+
+    # 解析 $3 参数
+    USER=$(echo $3 | cut -d'@' -f1)
+    HOST=$(echo $3 | cut -d'@' -f2 | cut -d':' -f1)
+    REMOTE_PATH=$(echo $3 | cut -d':' -f2)
+
+    if [ -z "$USER" ] || [ -z "$HOST" ] || [ -z "$REMOTE_PATH" ]; then
+        echo -e "\033[1;31mInvalid target device format: $3\033[0m"
+        echo -e "\033[1;33mExpected format: username@host:/path/to/target\033[0m"
         exit 1
     fi
+
+    echo -e "\033[1;32mCompressing the install folder\033[0m"
+    tar -czf install.tar.gz -C $(pwd) install
+    if [ $? -ne 0 ]; then
+        echo -e "\033[1;31mFailed to compress the install folder\033[0m"
+        exit 1
+    fi
+
+    echo -e "\033[1;32mCopying the compressed file to the target device\033[0m"
+    scp -P $2 install.tar.gz $USER@$HOST:$REMOTE_PATH > /dev/null
+    if [ $? -ne 0 ]; then
+        echo -e "\033[1;31mFailed to copy the compressed file to the target device\033[0m"
+        rm -f install.tar.gz
+        exit 1
+    fi
+
+    echo -e "\033[1;32mExtracting the compressed file on the target device\033[0m"
+    ssh -p $2 $USER@$HOST "cd $REMOTE_PATH && tar -xzf install.tar.gz && rm -f install.tar.gz"
+    if [ $? -ne 0 ]; then
+        echo -e "\033[1;31mFailed to extract the compressed file on the target device\033[0m"
+        rm -f install.tar.gz
+        exit 1
+    fi
+
+    echo -e "\033[1;32mCleaning up local temporary files\033[0m"
+    rm -f install.tar.gz
+
+    echo -e "\033[1;32mOperation completed successfully\033[0m"
 else
     echo -e "\033[1;33mSkip copying the install folder to the target device\033[0m"
     exit 0
